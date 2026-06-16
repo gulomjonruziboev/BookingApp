@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Buron</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Bosh sahifa</string>
+    <string name="nav_search">Qidiruv</string>
+    <string name="nav_bookings">Bronlarim</string>
+    <string name="nav_contact">Aloqa</string>
+
+    <!-- Home -->
+    <string name="home_popular_venues">Mashhur to\'yxonalar</string>
+    <string name="home_see_more">Ko\'proq ko\'rish</string>
+    <string name="home_search_placeholder">To\'yxona qidirish…</string>
+    <string name="home_contact_teaser">Savollaringiz bormi? Biz bilan bog\'laning</string>
+    <string name="location_rationale">Yaqin atrofdagi to\'yxonalarni ko\'rsatish uchun joylashuv ruxsati kerak</string>
+
+    <!-- Search -->
+    <string name="search_title">Qidiruv natijalari</string>
+    <string name="search_loading">Yuklanmoqda…</string>
+    <string name="search_empty">Hech narsa topilmadi.</string>
+    <string name="search_filters">Filtrlar</string>
+    <string name="search_apply">Qo\'llash</string>
+    <string name="search_reset">Tozalash</string>
+    <string name="search_prev">Oldingi</string>
+    <string name="search_next">Keyingi</string>
+    <string name="filter_region">Viloyat</string>
+    <string name="filter_min_price">Min narx</string>
+    <string name="filter_max_price">Max narx</string>
+    <string name="filter_min_capacity">Min sig\'im</string>
+    <string name="filter_min_rating">Min reyting</string>
+    <string name="filter_sort">Tartiblash</string>
+    <string name="filter_order">Tartib</string>
+    <string name="filter_all_regions">Barcha viloyatlar</string>
+    <string name="filter_rating_all">Barchasi</string>
+    <string name="filter_rating_3">3+</string>
+    <string name="filter_rating_4">4+</string>
+    <string name="filter_rating_5">5</string>
+    <string name="sort_rating">Reyting</string>
+    <string name="sort_price">Narx</string>
+    <string name="sort_name">Nomi</string>
+    <string name="order_desc">Kamayish</string>
+    <string name="order_asc">O\'sish</string>
+
+    <!-- Venue detail -->
+    <string name="venue_per_session">sessiya uchun</string>
+    <string name="venue_capacity">%1$d kishi</string>
+    <string name="venue_owner">Egasi: %1$s %2$s</string>
+    <string name="venue_map_link">Xaritada ko\'rish</string>
+    <string name="venue_reviews">Sharhlar</string>
+    <string name="venue_no_reviews">Hali sharh yo\'q</string>
+    <string name="venue_book">Bron qilish</string>
+    <string name="venue_select_date_sessions">Sana va sessiyani tanlang</string>
+
+    <!-- Sessions -->
+    <string name="session_morning">Nahorgi (09:00–14:00)</string>
+    <string name="session_afternoon">Abetgi (14:00–18:00)</string>
+    <string name="session_evening">Kechgi (18:00–23:00)</string>
+
+    <!-- Booking -->
+    <string name="booking_title">Bron qilish</string>
+    <string name="booking_name">Ism</string>
+    <string name="booking_phone">Telefon</string>
+    <string name="booking_submit">Yuborish</string>
+    <string name="booking_success">Bron qabul qilindi!</string>
+    <string name="booking_confirm_cancel">Bronni bekor qilishni tasdiqlaysizmi?</string>
+    <string name="booking_cancelled">Bron bekor qilindi</string>
+    <string name="booking_cancel">Bekor qilish</string>
+    <string name="booking_confirm">Tasdiqlash</string>
+
+    <!-- Booking status -->
+    <string name="status_pending">Kutilmoqda</string>
+    <string name="status_confirmed">Tasdiqlangan</string>
+    <string name="status_cancelled">Bekor qilingan</string>
+
+    <!-- Auth -->
+    <string name="login_title">Kirish</string>
+    <string name="login_submit">Kirish</string>
+    <string name="login_no_account">Ro\'yxatdan o\'tish</string>
+    <string name="register_title">Ro\'yxatdan o\'tish</string>
+    <string name="register_submit">Ro\'yxatdan o\'tish</string>
+    <string name="register_has_account">Kirish</string>
+    <string name="register_success">Muvaffaqiyatli ro\'yxatdan o\'tdingiz!</string>
+    <string name="auth_client_only">Bu ilova faqat mijozlar uchun</string>
+    <string name="field_first_name">Ism</string>
+    <string name="field_last_name">Familiya</string>
+    <string name="field_password">Parol</string>
+    <string name="logout">Chiqish</string>
+
+    <!-- My bookings -->
+    <string name="my_bookings_title">Mening bronlarim</string>
+    <string name="my_bookings_empty">Hali bron qilmagansiz</string>
+    <string name="my_bookings_search_cta">To\'yxona qidirish</string>
+
+    <!-- Reviews -->
+    <string name="review_add">Sharh qo\'shish</string>
+    <string name="review_rating">Reyting</string>
+    <string name="review_comment">Sharh</string>
+    <string name="review_submit">Yuborish</string>
+    <string name="review_success">Sharh qo\'shildi</string>
+    <string name="review_booking_required">Sharh qoldirish uchun bron tasdiqlangan bo\'lishi kerak</string>
+
+    <!-- Contact -->
+    <string name="contact_title">Aloqa</string>
+    <string name="contact_address">Manzil</string>
+    <string name="contact_phone">Telefon</string>
+    <string name="contact_telegram">Telegram</string>
+    <string name="contact_email">Email</string>
+    <string name="contact_hours">Ish vaqti</string>
+    <string name="contact_form_title">Xabar yuborish</string>
+    <string name="contact_message">Xabar</string>
+    <string name="contact_send">Yuborish</string>
+    <string name="contact_success">Xabaringiz qabul qilindi!</string>
+
+    <!-- Errors -->
+    <string name="error_network">Internet aloqasi yo\'q</string>
+    <string name="error_server">Server xatosi. Keyinroq urinib ko\'ring.</string>
+    <string name="error_rate_limit">Juda ko\'p so\'rov. Keyinroq urinib ko\'ring.</string>
+    <string name="error_not_found">Topilmadi</string>
+    <string name="error_phone">Telefon: +998 va 9 ta raqam (masalan +998901234567)</string>
+    <string name="error_name">%1$s: faqat harflar, 2–50 belgi</string>
+    <string name="error_password">Parol kamida 6 belgidan iborat bo\'lishi kerak</string>
+    <string name="error_review_comment">Sharh kamida 5 belgi</string>
+
+    <!-- Common -->
+    <string name="loading">Yuklanmoqda…</string>
+    <string name="retry">Qayta urinish</string>
+    <string name="close">Yopish</string>
+    <string name="yes">Ha</string>
+    <string name="no">Yo\'q</string>
+    <string name="currency_suffix">so\'m</string>
+</resources>
