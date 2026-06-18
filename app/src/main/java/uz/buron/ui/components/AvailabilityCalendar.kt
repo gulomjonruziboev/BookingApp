@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -71,6 +72,11 @@ fun AvailabilityCalendar(
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val cellSize = ((screenWidth - 32.dp) / 7).coerceAtLeast(40.dp)
     val circleSize = (cellSize - 6.dp).coerceAtLeast(34.dp)
+    val monthTitleColor = if (isSystemInDarkTheme()) {
+        Color.White
+    } else {
+        TextPrimary
+    }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -79,16 +85,24 @@ fun AvailabilityCalendar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = { onMonthChange(yearMonth.minusMonths(1)) }) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Oldingi oy")
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = "Oldingi oy",
+                    tint = monthTitleColor
+                )
             }
             Text(
                 text = yearMonth.month.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("uz-UZ")) +
                     " ${yearMonth.year}",
                 style = MaterialTheme.typography.titleLarge,
-                color = TextPrimary
+                color = monthTitleColor
             )
             IconButton(onClick = { onMonthChange(yearMonth.plusMonths(1)) }) {
-                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Keyingi oy")
+                Icon(
+                    Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = "Keyingi oy",
+                    tint = monthTitleColor
+                )
             }
         }
 
