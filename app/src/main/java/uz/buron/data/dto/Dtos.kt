@@ -109,8 +109,8 @@ data class BookingDto(
 @JsonClass(generateAdapter = true)
 data class CreateBookingRequestDto(
     val venueId: String,
-    val clientName: String? = null,
-    val clientPhone: String? = null,
+    val clientName: String,
+    val clientPhone: String,
     val date: String,
     val sessions: List<String>
 )

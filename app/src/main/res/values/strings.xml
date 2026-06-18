@@ -62,6 +62,7 @@
     <string name="booking_name">Ism</string>
     <string name="booking_phone">Telefon</string>
     <string name="booking_submit">Yuborish</string>
+    <string name="booking_submitting">Yuborilmoqda…</string>
     <string name="booking_success">Bron qabul qilindi!</string>
     <string name="booking_confirm_cancel">Bronni bekor qilishni tasdiqlaysizmi?</string>
     <string name="booking_cancelled">Bron bekor qilindi</string>

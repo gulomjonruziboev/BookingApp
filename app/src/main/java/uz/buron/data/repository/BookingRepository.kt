@@ -25,8 +25,8 @@ class BookingRepository @Inject constructor(
         venueId: String,
         date: String,
         sessions: List<String>,
-        clientName: String? = null,
-        clientPhone: String? = null
+        clientName: String,
+        clientPhone: String
     ): Result<Booking> {
         return safeApiCall(moshi) {
             api.createBooking(

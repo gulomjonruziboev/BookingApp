@@ -16,6 +16,7 @@ import uz.buron.data.repository.VenueRepository
 import uz.buron.domain.model.CalendarDay
 import uz.buron.domain.model.Review
 import uz.buron.domain.model.Venue
+import uz.buron.util.Constants
 import uz.buron.util.DateUtils
 import uz.buron.util.PhoneUtils
 import uz.buron.util.Validation
@@ -85,18 +86,28 @@ class VenueDetailViewModel @Inject constructor(
         }
     }
 
-    fun loadCalendar(venueId: String, month: YearMonth) {
+    fun loadCalendar(venueId: String, month: YearMonth, clearSelection: Boolean = true) {
         viewModelScope.launch {
             val monthStr = DateUtils.toMonthString(month)
             bookingRepository.getCalendar(venueId, monthStr)
                 .onSuccess { response ->
-                    _uiState.update {
-                        it.copy(
+                    _uiState.update { state ->
+                        val selectedDate = if (clearSelection) null else state.selectedDate
+                        val availableSessions = if (clearSelection) {
+                            emptyList()
+                        } else {
+                            selectedDate?.let { selected ->
+                                response.calendar[DateUtils.toCalendarKey(selected)]?.available
+                            } ?: emptyList()
+                        }
+                        state.copy(
                             currentMonth = month,
                             calendar = response.calendar,
-                            selectedDate = null,
-                            selectedSessions = emptySet(),
-                            availableSessions = emptyList()
+                            selectedDate = selectedDate,
+                            selectedSessions = if (clearSelection) emptySet() else {
+                                state.selectedSessions.intersect(availableSessions.toSet())
+                            },
+                            availableSessions = availableSessions
                         )
                     }
                 }
@@ -154,11 +165,14 @@ class VenueDetailViewModel @Inject constructor(
 
     fun submitBooking(venueId: String) {
         val state = _uiState.value
+        if (state.isSubmittingBooking) return
+
         val date = state.selectedDate ?: return
         if (state.selectedSessions.isEmpty()) return
 
-        var clientName: String? = null
-        var clientPhone: String? = null
+        val user = currentUser
+        var clientName = user?.fullName
+        var clientPhone = user?.phone
 
         if (!isLoggedIn) {
             val nameError = Validation.validateName(state.guestName, "Ism")
@@ -174,12 +188,50 @@ class VenueDetailViewModel @Inject constructor(
             clientPhone = normalizedPhone
         }
 
+        if (clientName.isNullOrBlank() || clientPhone.isNullOrBlank()) {
+            _uiState.update { it.copy(bookingError = "Ism va telefon talab qilinadi") }
+            return
+        }
+
         viewModelScope.launch {
             _uiState.update { it.copy(isSubmittingBooking = true, bookingError = null) }
+
+            val monthStr = DateUtils.toMonthString(state.currentMonth)
+            val calendarResult = bookingRepository.getCalendar(venueId, monthStr)
+            if (calendarResult.isFailure) {
+                _uiState.update {
+                    it.copy(
+                        isSubmittingBooking = false,
+                        bookingError = mapError(calendarResult.exceptionOrNull()!!)
+                    )
+                }
+                return@launch
+            }
+
+            val freshCalendar = calendarResult.getOrThrow().calendar
+            val dateKey = DateUtils.toCalendarKey(date)
+            val dayData = freshCalendar[dateKey]
+            val availableNow = dayData?.available ?: emptyList()
+            val orderedSessions = Constants.SESSION_ORDER.filter { it in state.selectedSessions }
+            val unavailableSessions = orderedSessions.filter { it !in availableNow }
+
+            if (unavailableSessions.isNotEmpty()) {
+                _uiState.update {
+                    it.copy(
+                        isSubmittingBooking = false,
+                        calendar = freshCalendar,
+                        availableSessions = availableNow,
+                        selectedSessions = state.selectedSessions.intersect(availableNow.toSet()),
+                        bookingError = "Tanlangan vaqt endi band. Iltimos, boshqa vaqtni tanlang."
+                    )
+                }
+                return@launch
+            }
+
             bookingRepository.createBooking(
                 venueId = venueId,
                 date = DateUtils.toIsoDateString(date),
-                sessions = state.selectedSessions.toList(),
+                sessions = orderedSessions,
                 clientName = clientName,
                 clientPhone = clientPhone
             ).onSuccess {
@@ -187,18 +239,21 @@ class VenueDetailViewModel @Inject constructor(
                     it.copy(
                         isSubmittingBooking = false,
                         bookingSuccess = true,
+                        calendar = freshCalendar,
                         snackbarMessage = "Bron qabul qilindi!"
                     )
                 }
-                loadCalendar(venueId, state.currentMonth)
+                loadCalendar(venueId, state.currentMonth, clearSelection = false)
                 if (isLoggedIn) {
                     checkReviewEligibility(venueId)
                 }
             }.onFailure { error ->
+                val message = mapError(error)
+                loadCalendar(venueId, state.currentMonth, clearSelection = false)
                 _uiState.update {
                     it.copy(
                         isSubmittingBooking = false,
-                        bookingError = mapError(error)
+                        bookingError = message
                     )
                 }
             }
@@ -294,8 +349,17 @@ class VenueDetailViewModel @Inject constructor(
         is ApiException.Network -> "Internet aloqasi yo'q"
         is ApiException.RateLimited -> "Juda ko'p so'rov. Keyinroq urinib ko'ring."
         is ApiException.Server -> "Server xatosi. Keyinroq urinib ko'ring."
-        is ApiException.Client -> error.message ?: "Xatolik"
-        else -> error.message ?: "Xatolik yuz berdi"
+        is ApiException.Client -> mapClientError(error.message)
+        else -> error.message?.let(::mapClientError) ?: "Xatolik yuz berdi"
+    }
+
+    private fun mapClientError(message: String?): String {
+        if (message.isNullOrBlank()) return "Xatolik"
+        return when {
+            message.contains("already booked", ignoreCase = true) ->
+                "Tanlangan vaqt endi band. Iltimos, boshqa vaqtni tanlang."
+            else -> message
+        }
     }
 
     companion object {

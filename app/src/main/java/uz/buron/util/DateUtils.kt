@@ -13,6 +13,7 @@ object DateUtils {
     private val uzLocale = Locale.forLanguageTag("uz-UZ")
     private val displayFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", uzLocale)
     private val monthFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
+    private val dateKeyFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 
     fun formatDisplayDate(isoDate: String): String {
         return try {
@@ -32,8 +33,11 @@ object DateUtils {
         yearMonth.format(monthFormatter)
 
     fun toIsoDateString(localDate: LocalDate): String {
-        return localDate.atStartOfDay(ZoneOffset.UTC).toInstant().toString()
+        return localDate.atStartOfDay(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
     }
+
+    fun toCalendarKey(localDate: LocalDate): String = localDate.format(dateKeyFormatter)
 
     fun parseDateKey(key: String): LocalDate? {
         return try {

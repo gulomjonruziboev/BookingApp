@@ -120,7 +120,11 @@ fun BookingBottomSheet(
                 }
 
                 PrimaryButton(
-                    text = stringResource(R.string.booking_submit),
+                    text = if (isSubmitting) {
+                        stringResource(R.string.booking_submitting)
+                    } else {
+                        stringResource(R.string.booking_submit)
+                    },
                     onClick = onSubmit,
                     enabled = !isSubmitting
                 )
